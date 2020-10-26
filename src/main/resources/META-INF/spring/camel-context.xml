@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <!-- You could also define a traditional camel context here -->
+  <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+    <route id="simple-route">
+       <!-- <from uri="timer:time1?period=10000"/>-->
+
+     <from uri="sftp://{{env:user}}@{{env:ip}}:22/{{env:location}}?connectTimeout=30000&amp;delay=60000&amp;disconnect=true&amp;filter=#filter&amp;include=.*.csv&amp;initialDelay=10000&amp;preferredAuthentications=publickey&amp;privateKeyFile={{env:key}}&amp;privateKeyPassphrase={{env:pass}}&amp;reconnectDelay=300000&amp;recursive=true&amp;stepwise=false&amp;throwExceptionOnConnectFailed=true"/>
+      <log id="route-log" message="File is read from the remote sftp endpoint with content: >>> ${body}"/>
+    </route>
+  </camelContext>
+<bean id="filter" class="org.example.Myfilter"/>
+</beans>
